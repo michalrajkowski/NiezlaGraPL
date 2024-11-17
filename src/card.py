@@ -60,4 +60,5 @@ class Card:
         return cls(name="", art="", text="")
 
     def __repr__(self):
-        return f"<Card(name={self.name}, attack={self.art}, defense={self.text})>"
+        return (f"<Card(name={self.name}, art={self.art}, text={self.text}, "
+            f"color={self.color.name}, cost={self.cost}, stats={self.stats.stats_to_string()})>")
