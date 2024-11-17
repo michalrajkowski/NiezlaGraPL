@@ -1,0 +1,40 @@
+Todo so i won't remember what to add to the app:
+
+INSTALLATION:
+- create manual / guide for easy installation 
+- package "all libraries + fonts" so it is works out of the box on all platforms
+- Web build
+- synchronization data folder / database with git for version control.
+
+
+PROGRAM:
+
+- QUICK PLAYTESTING:
+    - card ui layout for quick print and test
+
+
+MOCKING AND UI BUILDING:
+- mocked card data sheet to see different variants?
+
+
+CARD UI:
+- 
+
+UI for player cards:
+- card type border - card color (color)
+- set symbol / release symbol for easier sorting (right bottom corner?)
+- name
+- Cost
+- effect
+- temp art maybe
+
+
+UI for Dungeon cards:
+- Different front and back card layout?
+- 
+
+
+
+UI for other cards:
+
+
