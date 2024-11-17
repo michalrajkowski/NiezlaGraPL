@@ -1,16 +1,25 @@
 from PIL import Image, ImageDraw, ImageFont
 from pilmoji import Pilmoji
-from card import Card
+from card import Card, CardColor
 from fpdf import FPDF
+from emoji_handler import multi_cost_to_emoji_text
 
 # Constants
 DPI = 300  # Dots per inch
 CM_TO_INCH = 2.54
-SYMBOLA_FONT_PATH = "/home/noodles/.fonts/Symbola.ttf"
+SYMBOLA_FONT_PATH = "fonts/Symbola/Symbola.ttf"
 
 # Convert centimeters to pixels at 300 DPI
 def cm_to_px(cm, dpi=DPI):
     return int((cm / CM_TO_INCH) * dpi)
+def tuple_cm_to_px(dimension_box, dpi=DPI):
+    return tuple(cm_to_px(x) for x in dimension_box)
+
+def centered_text_position_in_box(font, text, box):
+    font_width, font_height = font.getsize(text)
+    new_width = box[0] + (box[2] - box[0] - font_width) / 2
+    new_height = box[1] + (box[3] - box[1] - font_height) / 2
+    return (int(new_width), int(new_height))
 
 class CardBuilder:
     def __init__(self, card : Card, card_size_cm=(6.3, 8.8)):
@@ -18,6 +27,21 @@ class CardBuilder:
         self.card_size_cm = card_size_cm
         self.card_size_px = (cm_to_px(card_size_cm[0]), cm_to_px(card_size_cm[1]))
         self.card = card
+    
+    def percent_tuple_to_px(self, percent_tuple, symmetry_x=False, symmetry_y=False):
+        (percent_x1, percent_y1, percent_x2, percent_y2) = percent_tuple
+        card_width, card_height = self.card_size_px  # Assuming self.card_size_px is (width, height)
+
+        # Calculate x and y positions
+        px_x1 = percent_x1 * card_width
+        px_y1 = percent_y1 * card_height
+
+        # Calculate width and height with optional symmetry
+        px_x2 = card_width - px_x1 if symmetry_x else  percent_x2 * card_width 
+        px_y2 = card_height - px_y1 if symmetry_y else  percent_y2 * card_height
+
+        return (px_x1, px_y1, px_x2, px_y2)
+        
 
     def build_card(self):
         # load fonts
@@ -65,6 +89,219 @@ class CardBuilder:
         with Pilmoji(card_image) as pilmoji:
             pilmoji.text((cm_to_px(0.5), cm_to_px(4.4)), self.card.text, (0, 0, 0), font)
         # draw.text((20, 40), self.card.text, font=font, fill=(0,0,0))
+
+        return card_image
+
+# This is actualy not a blank card but player card
+class PlayerCardBuilder(CardBuilder): 
+    def __init__(self, card : Card, card_size_cm=(6.3, 8.8)):
+        # Convert card size from cm to pixels
+        self.card_size_cm = card_size_cm
+        self.card_size_px = (cm_to_px(card_size_cm[0]), cm_to_px(card_size_cm[1]))
+        self.card = card
+    
+    # Method for building card image
+    # We might want to add some OOP here in the future so card building process is maybe more modular?
+    #   Or we add building same as UI elements with flow layouts etc
+    def build_card(self):
+        # Load card Fonts
+        # try:
+        #    font = ImageFont.truetype(SYMBOLA_FONT_PATH, 32)
+        #except IOError:
+        #    print("Symbola font not found, falling back to default font.")
+        #    font = ImageFont.load_default()
+        # font = ImageFont.load_default()
+        emote_font = ImageFont.truetype(SYMBOLA_FONT_PATH, 60)
+        description_font = ImageFont.truetype(SYMBOLA_FONT_PATH, 30)
+        '''
+        UI for player cards:
+        + card type border - card color (color)
+        - set symbol / release symbol for easier sorting (right bottom corner?)
+        - name
+        - Cost
+        - effect
+        - temp art maybe
+        - description box 
+        '''
+
+        def card_color_enum_to_hex_color(card_color_enum : CardColor) -> str:
+            match card_color_enum:
+                case CardColor.NONE:
+                    return "rgb(255,255,255)"
+                case CardColor.RED:
+                    return "rgb(255,0,0)"
+                case CardColor.GREEN:
+                    return "rgb(0,255,0)"
+                case CardColor.BLUE:
+                    return "rgb(0,0,255)"
+                case CardColor.YELLOW:
+                    return "rgb(255,255,0)"
+                case CardColor.PURPLE:
+                    return "rgb(128,0,128)"
+                case CardColor.DUNGEON:
+                    return "rgb(67,99,75)"
+
+        
+        card_image = Image.new(mode="RGB", size=self.card_size_px)
+        draw = ImageDraw.Draw(card_image)
+        # card border color
+        # Inner color
+        card_color_enum = self.card.color
+        card_color = card_color_enum_to_hex_color(card_color_enum)
+
+        # Draw boxes for each card Parts? (name box, description box, cost box, art box, Set/sort box?)
+        # Draw art
+        WHOLE_CARD_BOX = (0.00, 0.00, 1.00, 1.00)
+        whole_card_box = self.percent_tuple_to_px(WHOLE_CARD_BOX, False, False)
+        draw.rectangle(whole_card_box,fill="black",outline ="red")
+
+        COLOR_BOX = (0.05, 0.03, 1.00, 1.00)
+        color_box = self.percent_tuple_to_px(COLOR_BOX, True, True)
+        draw.rectangle(color_box,fill=card_color,outline ="red")
+        
+        INNER_WHITE_BOX = (0.1, 0.1, 1.0, 1.0)
+        inner_white_box = self.percent_tuple_to_px(INNER_WHITE_BOX, True, True)
+        draw.rectangle(inner_white_box,fill="white",outline ="red")
+
+        ART_BOX = (0.1, 0.2, 1.0, 0.6)
+        art_box = self.percent_tuple_to_px(ART_BOX, True, False)
+        draw.rectangle(art_box,fill="blue",outline ="red")
+        
+        NAME_BOX = (0.1, 0.1, 1.00, 0.2)
+        name_box = self.percent_tuple_to_px(NAME_BOX, True, False)
+        draw.rectangle(name_box,fill=None,outline ="red")
+
+        # Draw card name
+        text = self.card.name
+        font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 40)
+        font_width, font_height = font.getsize(text)
+        new_width = name_box[0] + (name_box[2] - name_box[0] - font_width) / 2
+        new_height = name_box[1] + (name_box[3] - name_box[1] - font_height) / 2
+        draw.text((new_width, new_height), text, fill="black", font=font)
+
+        COSTS_BOX = (0.25, 0.55, 1.0, 0.65)
+        costs_box = self.percent_tuple_to_px(COSTS_BOX, True, False)
+        draw.rectangle(costs_box,fill="white",outline ="black")
+
+        # Draw costs symbols
+        card_cost = self.card.cost
+        cost_text = multi_cost_to_emoji_text(card_cost)
+        emote_text_box = centered_text_position_in_box(emote_font, cost_text, costs_box)
+        with Pilmoji(card_image) as pilmoji:
+            pilmoji.text(emote_text_box, cost_text, (0, 0, 0), emote_font)
+
+        DESCRIPTION_BOX = (0.1, 0.65, 1.00, 0.9)
+        description_box = self.percent_tuple_to_px(DESCRIPTION_BOX, True, False)
+        draw.rectangle(description_box,fill=None,outline ="red")
+
+        # Card Description text:
+        with Pilmoji(card_image) as pilmoji:
+            pilmoji.text((int(description_box[0]), int(description_box[1])), self.card.text, (0, 0, 0), description_font)
+
+        return card_image
+
+# This is actualy not a blank card but player card
+class DungeonCardBuilder(CardBuilder): 
+    def __init__(self, card : Card, card_size_cm=(6.3, 8.8)):
+        # Convert card size from cm to pixels
+        self.card_size_cm = card_size_cm
+        self.card_size_px = (cm_to_px(card_size_cm[0]), cm_to_px(card_size_cm[1]))
+        self.card = card
+    
+    # Method for building card image
+    # We might want to add some OOP here in the future so card building process is maybe more modular?
+    #   Or we add building same as UI elements with flow layouts etc
+    def build_card(self):
+        # Load card Fonts
+        # try:
+        #    font = ImageFont.truetype(SYMBOLA_FONT_PATH, 32)
+        #except IOError:
+        #    print("Symbola font not found, falling back to default font.")
+        #    font = ImageFont.load_default()
+        # font = ImageFont.load_default()
+        emote_font = ImageFont.truetype(SYMBOLA_FONT_PATH, 60)
+        description_font = ImageFont.truetype(SYMBOLA_FONT_PATH, 30)
+        '''
+        UI for player cards:
+        + card type border - card color (color)
+        - set symbol / release symbol for easier sorting (right bottom corner?)
+        - name
+        - Cost
+        - effect
+        - temp art maybe
+        - description box 
+        '''
+
+        def card_color_enum_to_hex_color(card_color_enum : CardColor) -> str:
+            match card_color_enum:
+                case CardColor.NONE:
+                    return "rgb(255,255,255)"
+                case CardColor.RED:
+                    return "rgb(255,0,0)"
+                case CardColor.GREEN:
+                    return "rgb(0,255,0)"
+                case CardColor.BLUE:
+                    return "rgb(0,0,255)"
+                case CardColor.YELLOW:
+                    return "rgb(255,255,0)"
+                case CardColor.PURPLE:
+                    return "rgb(128,0,128)"
+        
+        card_image = Image.new(mode="RGB", size=self.card_size_px)
+        draw = ImageDraw.Draw(card_image)
+        # card border color
+        # Inner color
+        card_color_enum = self.card.color
+        card_color = card_color_enum_to_hex_color(card_color_enum)
+
+        # Draw boxes for each card Parts? (name box, description box, cost box, art box, Set/sort box?)
+        # Draw art
+        WHOLE_CARD_BOX = (0.00, 0.00, 1.00, 1.00)
+        whole_card_box = self.percent_tuple_to_px(WHOLE_CARD_BOX, False, False)
+        draw.rectangle(whole_card_box,fill="black",outline ="red")
+
+        COLOR_BOX = (0.05, 0.03, 1.00, 1.00)
+        color_box = self.percent_tuple_to_px(COLOR_BOX, True, True)
+        draw.rectangle(color_box,fill=card_color,outline ="red")
+        
+        INNER_WHITE_BOX = (0.1, 0.1, 1.0, 1.0)
+        inner_white_box = self.percent_tuple_to_px(INNER_WHITE_BOX, True, True)
+        draw.rectangle(inner_white_box,fill="white",outline ="red")
+
+        ART_BOX = (0.1, 0.2, 1.0, 0.6)
+        art_box = self.percent_tuple_to_px(ART_BOX, True, False)
+        draw.rectangle(art_box,fill="blue",outline ="red")
+        
+        NAME_BOX = (0.1, 0.1, 1.00, 0.2)
+        name_box = self.percent_tuple_to_px(NAME_BOX, True, False)
+        draw.rectangle(name_box,fill=None,outline ="red")
+
+        # Draw card name
+        text = self.card.name
+        font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 40)
+        font_width, font_height = font.getsize(text)
+        new_width = name_box[0] + (name_box[2] - name_box[0] - font_width) / 2
+        new_height = name_box[1] + (name_box[3] - name_box[1] - font_height) / 2
+        draw.text((new_width, new_height), text, fill="black", font=font)
+
+        COSTS_BOX = (0.25, 0.55, 1.0, 0.65)
+        costs_box = self.percent_tuple_to_px(COSTS_BOX, True, False)
+        draw.rectangle(costs_box,fill="white",outline ="black")
+
+        # Draw costs symbols
+        card_dungeon_stats = self.card.stats
+        stats_text = card_dungeon_stats.stats_to_string()
+        emote_text_box = centered_text_position_in_box(emote_font, stats_text, costs_box)
+        with Pilmoji(card_image) as pilmoji:
+            pilmoji.text(emote_text_box, stats_text, (0, 0, 0), emote_font)
+
+        DESCRIPTION_BOX = (0.1, 0.65, 1.00, 0.9)
+        description_box = self.percent_tuple_to_px(DESCRIPTION_BOX, True, False)
+        draw.rectangle(description_box,fill=None,outline ="red")
+
+        # Card Description text:
+        with Pilmoji(card_image) as pilmoji:
+            pilmoji.text((int(description_box[0]), int(description_box[1])), self.card.text, (0, 0, 0), description_font)
 
         return card_image
 
