@@ -3,7 +3,8 @@ from pilmoji import Pilmoji
 from card import Card, CardColor
 from fpdf import FPDF
 from emoji_handler import multi_cost_to_emoji_text
-
+from text_box import text_box
+from emoji_text_box import emoji_text_box
 # Constants
 DPI = 300  # Dots per inch
 CM_TO_INCH = 2.54
@@ -112,7 +113,8 @@ class PlayerCardBuilder(CardBuilder):
         #    font = ImageFont.load_default()
         # font = ImageFont.load_default()
         emote_font = ImageFont.truetype(SYMBOLA_FONT_PATH, 60)
-        description_font = ImageFont.truetype(SYMBOLA_FONT_PATH, 30)
+        description_font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 30)
+        name_font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 40)
         '''
         UI for player cards:
         + card type border - card color (color)
@@ -173,11 +175,11 @@ class PlayerCardBuilder(CardBuilder):
 
         # Draw card name
         text = self.card.name
-        font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 40)
-        font_width, font_height = font.getsize(text)
+        name_font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 40)
+        font_width, font_height = name_font.getsize(text)
         new_width = name_box[0] + (name_box[2] - name_box[0] - font_width) / 2
         new_height = name_box[1] + (name_box[3] - name_box[1] - font_height) / 2
-        draw.text((new_width, new_height), text, fill="black", font=font)
+        draw.text((new_width, new_height), text, fill="black", font=name_font)
 
         COSTS_BOX = (0.25, 0.55, 1.0, 0.65)
         costs_box = self.percent_tuple_to_px(COSTS_BOX, True, False)
@@ -195,8 +197,11 @@ class PlayerCardBuilder(CardBuilder):
         draw.rectangle(description_box,fill=None,outline ="red")
 
         # Card Description text:
-        with Pilmoji(card_image) as pilmoji:
-            pilmoji.text((int(description_box[0]), int(description_box[1])), self.card.text, (0, 0, 0), description_font)
+        (x1,y1,x2,y2) = description_box
+        description_box_wh = (x1, y1, x2-x1, y2-y1)
+        emoji_text_box(self.card.text, card_image, description_font, description_box_wh, fill="black")
+        # with Pilmoji(card_image) as pilmoji:
+        #     pilmoji.text((int(description_box[0]), int(description_box[1])), self.card.text, (0, 0, 0), description_font)
 
         return card_image
 
@@ -220,7 +225,8 @@ class DungeonCardBuilder(CardBuilder):
         #    font = ImageFont.load_default()
         # font = ImageFont.load_default()
         emote_font = ImageFont.truetype(SYMBOLA_FONT_PATH, 60)
-        description_font = ImageFont.truetype(SYMBOLA_FONT_PATH, 30)
+        description_font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 30)
+        name_font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 40)
         '''
         UI for player cards:
         + card type border - card color (color)
@@ -278,11 +284,11 @@ class DungeonCardBuilder(CardBuilder):
 
         # Draw card name
         text = self.card.name
-        font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 40)
-        font_width, font_height = font.getsize(text)
+        name_font = ImageFont.truetype('fonts/GidoleFont/Gidole-Regular.ttf', 40)
+        font_width, font_height = name_font.getsize(text)
         new_width = name_box[0] + (name_box[2] - name_box[0] - font_width) / 2
         new_height = name_box[1] + (name_box[3] - name_box[1] - font_height) / 2
-        draw.text((new_width, new_height), text, fill="black", font=font)
+        draw.text((new_width, new_height), text, fill="black", font=name_font)
 
         COSTS_BOX = (0.25, 0.55, 1.0, 0.65)
         costs_box = self.percent_tuple_to_px(COSTS_BOX, True, False)
@@ -300,8 +306,11 @@ class DungeonCardBuilder(CardBuilder):
         draw.rectangle(description_box,fill=None,outline ="red")
 
         # Card Description text:
-        with Pilmoji(card_image) as pilmoji:
-            pilmoji.text((int(description_box[0]), int(description_box[1])), self.card.text, (0, 0, 0), description_font)
+        (x1,y1,x2,y2) = description_box
+        description_box_wh = (x1, y1, x2-x1, y2-y1)
+        emoji_text_box(self.card.text, card_image, description_font, description_box_wh, fill="black")
+        # with Pilmoji(card_image) as pilmoji:
+        #    pilmoji.text((int(description_box[0]), int(description_box[1])), self.card.text, (0, 0, 0), description_font)
 
         return card_image
 
