@@ -1,0 +1,114 @@
+[
+    {
+        "name": "Card 1",
+        "cost": ["red/green/blue", "green", "blue"],
+        "description": "This is a player card with a multi-color cost.",
+        "type": "player",
+        "power": [["red", 3]]
+    },
+    {
+        "name": "Card 2",
+        "cost": ["white"],
+        "description": "A simple player card with a white mana cost.",
+        "type": "player",
+        "power": [["red", 3],["green", 2],["blue", 1]]
+    },
+    {
+        "name": "Card 3",
+        "cost": ["red", "green", "blue"],
+        "description": "This is not a player card.",
+        "type": "monster",
+        "power": [["red/blue", 3]]
+    },
+    {
+        "name": "Card 1",
+        "cost": ["white/black", "yellow/white", "blue"],
+        "description": "This is a player card with a multi-color cost.",
+        "type": "player",
+        "power": [["cyan/magenta/yellow", 3]]
+    },
+    {
+        "name": "Card 2",
+        "cost": ["white"],
+        "description": "A simple player card with a white mana cost.",
+        "type": "player"
+    },
+    {
+        "name": "Card 3",
+        "cost": ["red", "green", "blue"],
+        "description": "This is not a player card.",
+        "type": "monster"
+    },
+    {
+        "name": "Card 1",
+        "cost": ["red", "green", "blue"],
+        "description": "This is a player card with a multi-color cost.",
+        "type": "player"
+    },
+    {
+        "name": "Card 2",
+        "cost": ["white"],
+        "description": "A simple player card with a white mana cost.",
+        "type": "player"
+    },
+    {
+        "name": "Card 3",
+        "cost": ["red", "green", "blue"],
+        "description": "This is not a player card.",
+        "type": "monster"
+    },
+    {
+        "name": "Card 1",
+        "cost": ["red", "green", "blue"],
+        "description": "This is a player card with a multi-color cost.",
+        "type": "player"
+    },
+    {
+        "name": "Card 2",
+        "cost": ["white"],
+        "description": "A simple player card with a white mana cost.",
+        "type": "player"
+    },
+    {
+        "name": "Card 3",
+        "cost": ["red", "green", "blue"],
+        "description": "This is not a player card.",
+        "type": "monster"
+    },
+    {
+        "name": "Card 1",
+        "cost": ["red", "green", "blue"],
+        "description": "This is a player card with a multi-color cost.",
+        "type": "player"
+    },
+    {
+        "name": "Card 2",
+        "cost": ["white"],
+        "description": "A simple player card with a white mana cost.",
+        "type": "player"
+    },
+    {
+        "name": "Card 3",
+        "cost": ["red", "green", "blue"],
+        "description": "This is not a player card.",
+        "type": "monster"
+    },
+    {
+        "name": "Card 1",
+        "cost": ["red", "green", "blue"],
+        "description": "This is a player card with a multi-color cost.",
+        "type": "player"
+    },
+    {
+        "name": "Card 2",
+        "cost": ["white"],
+        "description": "A simple player card with a white mana cost.",
+        "type": "player"
+    },
+    {
+        "name": "Card 3",
+        "cost": ["red", "green", "blue"],
+        "description": "This is not a player card.",
+        "type": "monster"
+    }
+]
