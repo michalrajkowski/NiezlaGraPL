@@ -8,7 +8,8 @@ const imageNames = [
   "loc_tower.webp",
   "loc_forest.webp",
   "loc_plains.webp",
-  "loc_village.webp"
+  "loc_village.webp",
+  "christmasland.png",
 ];
 
 // Configure Fuse.js for fuzzy searching
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cardsContainer = document.getElementById("cards-container");
 
     // Fetch card data from the JSON file
-    fetch("data/json/cards.json")
+    fetch("data/json/christmas_land.json")
         .then(response => response.json())
         .then(cards => {
             cards.forEach(card => {
@@ -64,9 +65,21 @@ document.addEventListener("DOMContentLoaded", () => {
                         cardElement.querySelector("#card-name").textContent = card.name;
                         
                         
-                        // Load card art:
-                        if (card.artUrl && card.artUrl !== "") {
-                            // Set the image source if art exists in the card data
+                        if (Array.isArray(card.artUrl) && card.artUrl.length > 0) {
+                            // If artUrl is an array, use the first image (or implement your own logic)
+                            const cardImage = cardElement.querySelector("#card-art");
+                            cardImage.src = card.artUrl[0]; // Set the first image
+                            cardImage.style = "position:absolute; left: 0; top: 0; width: 50%;"
+
+                            const cardImageSecond = cardElement.querySelector("#card-art-two");
+                            if (cardImageSecond) { // Check if the second image exists
+                                cardImageSecond.src = card.artUrl[1]; // Set the second image
+                                cardImageSecond.style= "position:absolute; right: 0; top: 0; width: 50%;";
+                            }
+                        } else if (card.artUrl && card.artUrl !== "") {
+                            const cardImageSecond = cardElement.querySelector("#card-art-two");
+                            cardImageSecond.style = "display:none;";
+                            // If artUrl is a string and not empty, set it directly
                             const cardImage = cardElement.querySelector("#card-art");
                             cardImage.src = card.artUrl;
                         }
