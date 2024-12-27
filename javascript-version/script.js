@@ -131,7 +131,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
 
                         // Load card description
-                        cardElement.querySelector("#card-description").innerHTML = card.description;
+                        if (Array.isArray(card.description) && card.description.length > 0) {
+                            // If artUrl is an array, use the first image (or implement your own logic)
+                            let totalString = ""
+                            // For each str concatanate them
+                            card.description.forEach((desc) => {
+                                totalString += `${desc}`;
+                            });
+
+                            cardElement.querySelector("#card-description").innerHTML = totalString
+                        } else if (card.description && card.description !== "") {
+                            cardElement.querySelector("#card-description").innerHTML = card.description;
+                        }
 
                         // Render mana cost squares if card type is player
                         if (card.type === 'player' && card.cost) {
