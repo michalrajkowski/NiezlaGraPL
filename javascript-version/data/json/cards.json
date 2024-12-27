@@ -1,67 +1,75 @@
 [
     {
-        "name": "Card 1",
+        "name": "Fire Dragon",
         "cost": ["red/green/blue", "green", "blue"],
-        "description": "This is a player card with a multi-color cost.",
+        "description": "This is a player card with a multi-color cost. This is a player card with a multi-color cost.This is a player card with a multi-color cost.This is a player card with a multi-color cost.This is a player card with a multi-color cost.",
         "type": "player",
-        "power": [["red", 3]]
+        "power": [["red", 3]],
+        "artUrl": "assets/card_arts/fire-dragon.jpeg",
+        "range": 3
     },
     {
-        "name": "Card 2",
-        "cost": ["white"],
-        "description": "A simple player card with a white mana cost.",
+        "name": "Card Reverse",
+        "cost": [],
+        "description": "Card is reversed (name on bottom) if there is \"reverse\": 1 in Json",
         "type": "player",
-        "power": [["red", 3],["green", 2],["blue", 1]]
+        "power": [["red", 3],["green", 2],["white", "🐟"]],
+        "artUrl": "",
+        "location": "taverun",
+        "reverse": 1
     },
     {
-        "name": "Card 3",
+        "name": "Web link image",
         "cost": ["red", "green", "blue"],
-        "description": "This is not a player card.",
+        "description": "This image got directly loaded from web",
         "type": "monster",
-        "power": [["red/blue", 3]]
+        "power": [["red/blue", 3]],
+        "artUrl": "https://as2.ftcdn.net/v2/jpg/05/68/92/91/1000_F_568929117_HE2PGgpWoeoo0ReZHGdfeLLpMSz1qkHs.jpg",
+        "bottomtext": "👺"
     },
     {
         "name": "Card 1",
         "cost": ["white/black", "yellow/white", "blue"],
-        "description": "This is a player card with a multi-color cost.",
+        "description": "This is a <strong>strong</strong> text, and this is <b>bold</b> text. Here is some <em>italicized</em> text, <u>underlined</u> text, and <span style=\"color: red;\">colored text</span>.",
         "type": "player",
         "power": [["cyan/magenta/yellow", 3]]
     },
     {
+        "name": "Paragraph Text",
+        "cost": ["white"],
+        "description": "<p>a<p>b<p>c",
+        "type": "player"
+    },
+    {
+        "name": "Emoji test",
+        "cost": ["red", "green", "blue"],
+        "description": "🌟🦄🍀🎉🚀🍕🌸🎮💫🌈🍩🐉🧩🔥🎶.",
+        "type": "monster"
+    },
+    {
+        "name": "HEX colors",
+        "cost": ["#C70039", "#DAF7A6", "#FFC300", "#FF5733", "#900C3F"],
+        "description": "<p><span style=\"color:#C70039;\">Text</span><span style=\"color:#DAF7A6;\">can</span><span style=\"color:#FFC300;\">be</span><span style=\"color:#FF5733;\">in</span><span style=\"color:#900C3F;\">hex</span><span style=\"color:#581845;\">colors</span></p>",
+        "type": "player"
+    },
+    {
         "name": "Card 2",
         "cost": ["white"],
-        "description": "A simple player card with a white mana cost.",
+        "description": "<p>This is <span style=\"font-size: xx-small;\">very tiny text</span> and this is normal text.</p>",
         "type": "player"
     },
     {
         "name": "Card 3",
         "cost": ["red", "green", "blue"],
-        "description": "This is not a player card.",
+        "description": "<p><strong style=\"text-decoration: underline dotted;\">This is bold text with a dotted underscore.</strong></p>",
         "type": "monster"
     },
     {
-        "name": "Card 1",
+        "name": "Bottom sym",
         "cost": ["red", "green", "blue"],
-        "description": "This is a player card with a multi-color cost.",
-        "type": "player"
-    },
-    {
-        "name": "Card 2",
-        "cost": ["white"],
-        "description": "A simple player card with a white mana cost.",
-        "type": "player"
-    },
-    {
-        "name": "Card 3",
-        "cost": ["red", "green", "blue"],
-        "description": "This is not a player card.",
-        "type": "monster"
-    },
-    {
-        "name": "Card 1",
-        "cost": ["red", "green", "blue"],
-        "description": "This is a player card with a multi-color cost.",
-        "type": "player"
+        "description": "Example of how to add bottom symbols.",
+        "type": "player",
+        "bottomtext": "🚀🍕🌸"
     },
     {
         "name": "Card 2",

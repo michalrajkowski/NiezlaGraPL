@@ -45,7 +45,6 @@ body {
     justify-content: center;
     align-items: center;
     padding: 0.0;
-    border: 1px solid black; 
     text-align: center; 
     margin: 0.0rem; 
 }
@@ -57,7 +56,6 @@ body {
     justify-content: center;
     align-items: center;
     padding: 0.0;
-    border: 1px solid black; 
     text-align: center; 
     margin: 0.0rem; 
 }
@@ -67,11 +65,50 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    border: 1px solid black;  
-    background-color: seagreen;
     z-index: 1;
     display: flex;
     flex-direction: column; 
+}
+
+.location-container {
+    width: 20%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column; 
+}
+
+.range-container {
+    width: 100%;
+    position: absolute;
+    top: 10%;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Center elements horizontally */
+    align-items: center; /* Optionally, center vertically */
+}
+
+.range-container-reverse {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Center elements horizontally */
+    align-items: center; /* Optionally, center vertically */
+}
+
+.range-icon img {
+    width: 30px; /* Square size */
+    height: 30px; /* Square size */
+    object-fit: cover; /* Ensures the image covers the square area without distorting */
+    margin: 0.1rem; /* Spacing between images */
 }
 
 .mana-cost-container {
@@ -79,8 +116,6 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    border: 1px solid black;  
-    background-color: seagreen;
     z-index: 1;
     display: flex;
     flex-direction: column;  
@@ -103,6 +138,7 @@ body {
     height: 0;
     padding-bottom: 100%;
     font-size: 40px;
+    border: 1px solid black;  
 }
 
 .power-element .text {
@@ -112,6 +148,38 @@ body {
     font-size: 40px; /* Add 'px' to specify units for font size */
     font-weight: bold;
     text-align: center;
+}
+
+.card-art {
+    width: 100%;          
+    height: 50%;        
+    position: relative;   
+    overflow: hidden;   
+    border-bottom: 1px solid black;  
+}
+
+.card-art img {
+    width: 100%;          
+    height: 100%;         
+    object-fit: cover;
+}
+
+.card-details {
+    width: 100%; 
+}
+
+.bottom-text-container {
+    position: absolute;
+    width: 100%;
+    height: 10%;
+    bottom:0;
+    text-align: center;
+}
+
+.bottom-text-container span{
+    text-align: center;
+    font-size: 30px; /* Adjust font size relative to the container height */
+    line-height: 100%; /* Make sure text fits well inside the height */
 }
 
 @media print {
