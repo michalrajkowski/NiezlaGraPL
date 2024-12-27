@@ -6,7 +6,8 @@
         "type": "player",
         "power": [["red", 3]],
         "artUrl": "assets/card_arts/fire-dragon.jpeg",
-        "range": 3
+        "range": 3,
+        "burning": 1
     },
     {
         "name": "Card Reverse",

@@ -109,6 +109,14 @@ document.addEventListener("DOMContentLoaded", () => {
                             bottomTextContainer.style = "display:none;";
                         }
 
+                        // Add flames for card burning if needed
+                        if (card.burning && card.burning != 0){
+                            
+                        }else{
+                            const flameContainer = cardElement.querySelector("#flame-container");
+                            flameContainer.style = "display:none;";
+                        }
+
                         // Load card description
                         cardElement.querySelector("#card-description").innerHTML = card.description;
 
@@ -123,8 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         // Append card to container
                         cardsContainer.appendChild(cardElement)    
-
-                        //swapElements(cardElement, "card-name", "card-description");
                     });
             });
         })
