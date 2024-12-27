@@ -214,31 +214,3 @@ body {
         border: 1px solid black; /* Ensure border visibility */
     }
 }
-/*
-.card-name-box {
-    width: 100%; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.2rem;
-    border: 1px solid black; 
-    text-align: center; 
-    margin-top: 1.2rem; 
-}
-
-.card-art {
-    width: 2in; 
-    height: 1.2in; 
-    object-fit: cover; 
-    margin-top: 0.5rem; 
-    border: 1px solid black; 
-}
-
-.card-details {
-    width: 100%; 
-    margin-top: 0.5rem; 
-    padding: 0.2rem;
-    text-align: center;
-    border: 1px solid black; 
-}
- */
